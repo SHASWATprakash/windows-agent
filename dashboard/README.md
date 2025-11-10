@@ -1,46 +1,155 @@
-# Getting Started with Create React App
+🧩 Windows Agent Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A lightweight Windows Security & Compliance Dashboard that visualizes host data collected by a Go-based agent.
+The system performs CIS Windows 10/11 Level 1 Benchmark checks, collects installed applications, and exposes them through a REST API for visualization in a React dashboard.
 
-## Available Scripts
+🚀 Features
+🖥️ Go Agent (Backend)
 
-In the project directory, you can run:
+Collects Hostname
 
-### `npm start`
+Enumerates Installed Applications
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Performs 10+ CIS Security Checks, such as:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Firewall profiles enabled
 
-### `npm test`
+BitLocker status
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+SMBv1 disabled
 
-### `npm run build`
+RDP NLA enabled
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Password & Account Lockout policy
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+UAC enabled
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Defender active
 
-### `npm run eject`
+LSA Protection
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Audit Policy Checks
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Secure Boot & Windows Updates
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Exposes results via REST endpoint:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+GET http://localhost:8080/host
 
-## Learn More
+💻 React Dashboard (Frontend)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Displays:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Hostname
+
+Installed Applications
+
+CIS Check Results (✅ PASS / ❌ FAIL with evidence)
+
+Provides “Sync Now” button to refresh data from the backend.
+
+Uses Axios for API communication.
+
+Responsive, minimal design using pure CSS.
+
+🏗️ Architecture Overview
+[ Windows Host ]
+       |
+       |--- Go Agent
+       |        └── Collects system info & CIS checks
+       |        └── Serves JSON at /host
+       |
+       └── React Dashboard (http://localhost:3000)
+                └── Fetches and visualizes the data
+
+⚙️ Installation & Setup
+1️⃣ Backend (Go Agent)
+git clone https://github.com/shaswatprakash/windows-agent.git
+cd windows-agent
+
+# Install dependencies
+go mod tidy
+
+# Run locally
+go run main.go
+
+# The agent will start on:
+# http://localhost:8080/host
+
+2️⃣ Frontend (React Dashboard)
+git clone https://github.com/shaswatprakash/windows-dashboard.git
+cd windows-dashboard
+
+# Install dependencies
+npm install
+
+# Run in development mode
+npm start
+
+
+📍 Open http://localhost:3000
+ in your browser.
+
+The dashboard will automatically fetch host data from the Go agent.
+
+🧪 API Example
+
+Endpoint:
+
+GET http://localhost:8080/host
+
+
+Sample Response:
+
+{
+  "hostname": "DESKTOP-12345",
+  "applications": [
+    { "name": "Google Chrome", "version": "127.0.6533.78" },
+    { "name": "Visual Studio Code", "version": "1.92.0" }
+  ],
+  "cis_checks": [
+    { "name": "Firewall Enabled", "passed": true, "evidence": "All profiles active" },
+    { "name": "SMBv1 Disabled", "passed": false, "evidence": "Feature detected" }
+  ]
+}
+
+## Project Structure
+windows-agent/
+├── main.go                  # Entry point for Go agent
+├── internal/
+│   ├── collector/           # CIS and app inventory logic
+│   └── sender/              # (Optional) network sender stub
+└── go.mod / go.sum
+
+windows-dashboard/
+├── src/
+│   ├── App.tsx              # Main React component
+│   ├── components/          # Tables & UI components
+│   └── index.tsx
+└── package.json
+
+### Building the Agent for Windows (from macOS)
+
+You can cross-compile your Go code to generate a Windows executable directly on macOS.
+
+Step 1️⃣ — Run this command from the project root
+GOOS=windows GOARCH=amd64 go build -o windows-agent.exe main.go
+
+
+💡 This creates a windows-agent.exe file inside your project directory.
+
+Step 2️⃣ — Transfer to Windows
+
+Copy windows-agent.exe to your Windows machine via USB or network share, then run:
+
+.\windows-agent.exe
+
+
+The agent will start and expose:
+
+http://localhost:8080/host
+👨‍💻 Author
+
+Shaswat Prakash
+Senior Software Developer / Full Stack Engineer
+🌐 GitHub
