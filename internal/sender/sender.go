@@ -8,9 +8,9 @@ import (
 	"github.com/shaswatprakash/windows-agent/internal/models"
 )
 
-func SendToAWS(data models.HostData, endpoint string) error {
+func SendToLocalIngestion(data models.HostData) error {
 	body, _ := json.Marshal(data)
-	req, _ := http.NewRequest("POST", endpoint, bytes.NewBuffer(body))
+	req, _ := http.NewRequest("POST", "http://localhost:8080/ingest", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}

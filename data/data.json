@@ -1,0 +1,65 @@
+{
+  "hostname": "SHASWATs-MacBook-Air.local",
+  "applications": [
+    {
+      "name": "MockApp",
+      "version": "1.0.0"
+    },
+    {
+      "name": "Chrome",
+      "version": "120.0.0"
+    }
+  ],
+  "cis_checks": [
+    {
+      "name": "Firewall profiles enabled",
+      "passed": true,
+      "evidence": "Mocked: all profiles enabled"
+    },
+    {
+      "name": "BitLocker enabled",
+      "passed": false,
+      "evidence": "Mocked: system drive not encrypted"
+    },
+    {
+      "name": "SMBv1 disabled",
+      "passed": true,
+      "evidence": "Mocked: SMBv1 service disabled"
+    },
+    {
+      "name": "RDP NLA enabled",
+      "passed": true,
+      "evidence": "Mocked: NLA required for RDP"
+    },
+    {
+      "name": "Password complexity enabled",
+      "passed": true,
+      "evidence": "Mocked: complexity enforced"
+    },
+    {
+      "name": "Account lockout policy set",
+      "passed": true,
+      "evidence": "Mocked: lockout threshold = 5"
+    },
+    {
+      "name": "UAC enabled",
+      "passed": true,
+      "evidence": "Mocked: UAC always notify"
+    },
+    {
+      "name": "LSA protection enabled",
+      "passed": false,
+      "evidence": "Mocked: LSA not protected"
+    },
+    {
+      "name": "Windows Defender enabled",
+      "passed": true,
+      "evidence": "Mocked: real-time protection active"
+    },
+    {
+      "name": "Automatic updates enabled",
+      "passed": true,
+      "evidence": "Mocked: updates auto-download"
+    }
+  ]
+}
